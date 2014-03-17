@@ -30,7 +30,7 @@ public class JoinListener implements Listener
 		Player player = event.getPlayer();
 
 		World world = player.getWorld();
-
+		
 		if (player.hasPlayedBefore() == false) 
 		{
 			Location spawnLocation = plugin.randomSpawn(world, player);
