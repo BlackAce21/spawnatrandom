@@ -3,6 +3,11 @@ package me.Blackace.spawnatrandom;
 
 import java.util.logging.Logger;
 
+import me.Blackace.spawnatrandom.listeners.JoinListener;
+import me.Blackace.spawnatrandom.listeners.RespawnListener;
+import me.Blackace.spawnatrandom.util.MyConfig;
+import me.Blackace.spawnatrandom.util.MyConfigManager;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -18,7 +23,7 @@ public class spawnatrandom extends JavaPlugin
 {
 	Logger randomSpawnLogger = Bukkit.getLogger();
 	MyConfigManager manager;
-	MyConfig spawnsConfig;
+	public MyConfig spawnsConfig;
 	JoinListener joinlistener;
 	RespawnListener respawnlistener;
 

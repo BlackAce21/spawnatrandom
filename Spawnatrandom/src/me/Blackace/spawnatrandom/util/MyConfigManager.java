@@ -1,4 +1,4 @@
-package me.Blackace.spawnatrandom;  //These config classes were created by Appljuze
+package me.Blackace.spawnatrandom.util;  //These config classes were created by Appljuze
 
 import java.io.BufferedReader; 
 import java.io.BufferedWriter;

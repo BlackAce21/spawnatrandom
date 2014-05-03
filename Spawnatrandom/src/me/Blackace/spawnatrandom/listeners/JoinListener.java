@@ -1,4 +1,4 @@
-package me.Blackace.spawnatrandom;
+package me.Blackace.spawnatrandom.listeners;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
