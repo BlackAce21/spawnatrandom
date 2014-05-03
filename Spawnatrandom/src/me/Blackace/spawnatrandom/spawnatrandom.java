@@ -3,19 +3,17 @@ package me.Blackace.spawnatrandom;
 
 import java.util.logging.Logger;
 
+import me.Blackace.spawnatrandom.commands.commandRandomSpawn;
 import me.Blackace.spawnatrandom.listeners.JoinListener;
 import me.Blackace.spawnatrandom.listeners.RespawnListener;
 import me.Blackace.spawnatrandom.util.MyConfig;
 import me.Blackace.spawnatrandom.util.MyConfigManager;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,10 +28,18 @@ public class spawnatrandom extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
+
 		randomSpawnLogger.info("Spawn At Random is charging its flux capacitor!");
+
+		//Listeners
 		this.joinlistener = new JoinListener(this);
 		this.respawnlistener = new RespawnListener(this);
 		randomSpawnLogger.info("Join Listener enabled!");
+		
+		//commands
+		this.getCommand("randomspawn").setExecutor(new commandRandomSpawn(this));
+
+		//config
 		manager = new MyConfigManager(this);
 		spawnsConfig = manager.getNewConfig("Spawns.yml", new String[]{"This is a listing of all first spawns", "all ints are placed as doubles"});
 
@@ -43,7 +49,7 @@ public class spawnatrandom extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
-
+		spawnsConfig.saveConfig();
 
 
 	}
@@ -143,40 +149,6 @@ public class spawnatrandom extends JavaPlugin
 
 	}
 
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
-	{
-		Player player = (Player) sender;
-
-		if(args.length == 1)	
-		{
-			if(label.equalsIgnoreCase("randomspawn"))
-			{
-
-				if(player.isOp())
-				{
-					Player playerToSpawn = Bukkit.getPlayer(args[0]);
-					if(Bukkit.getPlayer(args[0]) != null)
-					{
-						if(playerToSpawn.isOnline())
-						{
-							World world = playerToSpawn.getWorld();
-							Location randomSpawn = randomSpawn(world, playerToSpawn);
-							playerToSpawn.teleport(randomSpawn);
-							playerToSpawn.sendMessage(ChatColor.GOLD + "You were randomly spawned by an admin!");
-						}
-						else player.sendMessage(ChatColor.RED + "Player " + args[0] + " is not online!");
-					}
-					else player.sendMessage(ChatColor.RED + "Player does not exist. Use /randomspawn <playername>");
-				}
-				else player.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
-
-			}
-			else player.sendMessage(ChatColor.RED + "Use /randomspawn <playername>");
-		}
-		else player.sendMessage(ChatColor.RED + "Invalid Arguements! /randomspawn <playername>");
-
-		return true;
-	}
 
 
 
