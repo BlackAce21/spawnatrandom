@@ -22,6 +22,7 @@ public class spawnatrandom extends JavaPlugin
 	Logger randomSpawnLogger = Bukkit.getLogger();
 	MyConfigManager manager;
 	public MyConfig spawnsConfig;
+	public MyConfig config;
 	JoinListener joinlistener;
 	RespawnListener respawnlistener;
 
@@ -42,8 +43,13 @@ public class spawnatrandom extends JavaPlugin
 		//config
 		manager = new MyConfigManager(this);
 		spawnsConfig = manager.getNewConfig("Spawns.yml", new String[]{"This is a listing of all first spawns", "all ints are placed as doubles"});
-
-
+		
+		config = manager.getNewConfig("config.yml", new String[]{"This is the main config file for randomspawn", "do not delete the # anywhere" , "it may break the config ;)"});
+		config.set("Options:." + "Command based autospawn:", false , "-Setting Command based autospawn to true will disable automatic randomspawning on your configured worlds and instead use the command method which can be set to a command block for having a spawn in another world for example then have them randomSpawn in another world");
+		config.set("Options:." + "Continous Random Spawn:", false , "-Setting Continuous Random Spawn to true will also make players Random Spawn each time they die within that worlds border.");
+		config.set("Options:." + "Worlds to Spawn in:.", "theworldname", "-Use the list below to set up a list of worlds to randomSpawn in on first join.");
+		
+		
 	}
 
 	@Override
@@ -71,8 +77,8 @@ public class spawnatrandom extends JavaPlugin
 			{
 				do
 				{
-					randomX = randomX();
-					randomZ = randomZ();
+					randomX = randomX(world.getName());
+					randomZ = randomZ(world.getName());
 					while(world.getChunkAt((int) randomX, (int) randomZ).isLoaded() == false)
 					{
 						world.getChunkAt((int) randomX, (int) randomZ).load();
@@ -88,34 +94,38 @@ public class spawnatrandom extends JavaPlugin
 
 
 
-
-		spawnsConfig.set("spawns." + playerName + ".X", randomSpawn.getX());
-		spawnsConfig.set("spawns." + playerName + ".Y", randomSpawn.getY());
-		spawnsConfig.set("spawns." + playerName + ".Z", randomSpawn.getZ());
-		spawnsConfig.set("spawns." + playerName + ".World", randomSpawn.getWorld().getName());
+		String worldName = randomSpawn.getWorld().getName();
+		spawnsConfig.set("spawns." + playerName + ".Worlds." + worldName + ".X", randomSpawn.getX());
+		spawnsConfig.set("spawns." + playerName + ".Worlds." + worldName + ".Y", randomSpawn.getY());
+		spawnsConfig.set("spawns." + playerName + ".Worlds." + worldName + ".Z", randomSpawn.getZ());
+		spawnsConfig.set("spawns." + playerName + ".Has RSpawned Before", true);
 		spawnsConfig.saveConfig();
 		return randomSpawn;
 
 	}
 
-	public double randomX()
+	public double randomX(String worldName)
 	{
 		double test = (Math.random() * 80000);
 
 		if (test > 40000)
 		{
 			double negativeX = ((test - 40000) * -1);
+			double adjustX = config.getDouble("Center Point Locations." + "World." + worldName + ".X");
+			negativeX = negativeX + adjustX;
 			return negativeX;
 		}
 		else return test;
 	}
-	public double randomZ()
+	public double randomZ(String worldName)
 	{
 		double test = (Math.random() * 80000);
 
 		if (test > 40000)
 		{
 			double negativeZ = ((test - 40000) * -1);
+			double adjustZ = config.getDouble("Center Point Locations." + "World." + worldName + ".Z:");
+			negativeZ = negativeZ + adjustZ;
 			return negativeZ;
 		}
 		else return test;

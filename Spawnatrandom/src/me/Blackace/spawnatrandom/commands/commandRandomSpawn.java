@@ -32,14 +32,17 @@ public class commandRandomSpawn implements CommandExecutor {
 				if(player.isOp())
 				{
 					Player playerToSpawn = Bukkit.getPlayer(args[0]);
-					if(Bukkit.getPlayer(args[0]) != null)
+					if(playerToSpawn != null)
 					{
 						if(playerToSpawn.isOnline())
 						{
 							World world = playerToSpawn.getWorld();
 							Location randomSpawn = plugin.randomSpawn(world, playerToSpawn);
 							playerToSpawn.teleport(randomSpawn);
-							playerToSpawn.sendMessage(ChatColor.GOLD + "You were randomly spawned by an admin!");
+							if(sender instanceof Player)
+							{
+							playerToSpawn.sendMessage(ChatColor.GOLD + "You were randomly spawned by admin " + sender.getName() + " your respawn point has been reset!");
+							}
 						}
 						else player.sendMessage(ChatColor.RED + "Player " + args[0] + " is not online!");
 					}

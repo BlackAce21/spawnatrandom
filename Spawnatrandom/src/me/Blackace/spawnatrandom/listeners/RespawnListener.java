@@ -1,8 +1,6 @@
 package me.Blackace.spawnatrandom.listeners;
 
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -23,20 +21,18 @@ public class RespawnListener implements Listener
 	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event)
 	{
-		Player player = event.getPlayer();
+		
 		if(event.isBedSpawn() == true) return;
 		if(event.isBedSpawn() == false)
 		{	
-			
+			String worldName = event.getRespawnLocation().getWorld().getName();
 			String playerName = event.getPlayer().getName();
-			World savedWorld = player.getServer().getWorld((String) plugin.spawnsConfig.get("spawns." + playerName + ".World"));
-			double savedX = plugin.spawnsConfig.getDouble("spawns." + playerName + ".X");
-			double savedY = plugin.spawnsConfig.getDouble("spawns." + playerName + ".Y");
-			double savedZ = plugin.spawnsConfig.getDouble("spawns." + playerName + ".Z");
+			double savedX = plugin.spawnsConfig.getDouble("spawns." + playerName + ".Worlds." + worldName + ".X");
+			double savedY = plugin.spawnsConfig.getDouble("spawns." + playerName + ".Worlds." + worldName + ".Y");
+			double savedZ = plugin.spawnsConfig.getDouble("spawns." + playerName + ".Worlds." + worldName + ".Z");
 			
-			Location savedSpawn = new Location(savedWorld, savedX, savedY, savedZ);
+			Location savedSpawn = new Location(event.getPlayer().getWorld(), savedX, savedY, savedZ);
 			event.setRespawnLocation(savedSpawn);
-		return;
 		}
 		
 	}

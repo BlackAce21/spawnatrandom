@@ -69,7 +69,6 @@ public class MyConfig
             this.config.set(manager.getPluginName() + "_COMMENT_" + comments, " " + comment);
             comments++;
         }
-        this.config.set(path, value);
     }
  
     public void set(String path, Object value, String[] comment) 

@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import me.Blackace.spawnatrandom.spawnatrandom;
 
@@ -28,21 +29,28 @@ public class JoinListener implements Listener
 	{
 
 		Player player = event.getPlayer();
-
 		World world = player.getWorld();
+		String worldName = world.getName();
 		
-		if (player.hasPlayedBefore() == false) 
+		
+		plugin.spawnsConfig.set("spawns." + player.getName() + ".Worlds." + worldName + ".X", 0.0 , "");
+		plugin.spawnsConfig.set("spawns." + player.getName() + ".Worlds." + worldName + ".Y", 0.0 , "");
+		plugin.spawnsConfig.set("spawns." + player.getName() + ".Worlds." + worldName + ".Z", 0.0 , "");
+		plugin.spawnsConfig.set("spawns." + player.getName() + ".Worlds." + worldName + ".Has RSpawned Before", false , "");
+		plugin.spawnsConfig.saveConfig();
+		
+		if (player.hasPlayedBefore() == false && plugin.config.getBoolean("Options." + "Command based autospawn:") == false) 
 		{
 			Location spawnLocation = plugin.randomSpawn(world, player);
-			player.teleport(spawnLocation.add(0, 2, 0));
+			player.teleport(spawnLocation.add(0, 2, 0) , TeleportCause.UNKNOWN);
 			player.sendMessage(ChatColor.GOLD + "You wake up in an unfamiliar place...");
 		}
 		else
 		{
-			player.sendMessage(ChatColor.GOLD + "You look like you've been here before...");
 			return;
 		}
-
+		
+		
 	}
 
 
