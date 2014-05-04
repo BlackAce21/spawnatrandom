@@ -1,5 +1,5 @@
 name: Spawn_at_Random
-version: 1.3
+version: 1.4
 main: me.Blackace.spawnatrandom.spawnatrandom
 description: A lite plugin that provides random spawns and respawns before players have a bed.
 commands:
