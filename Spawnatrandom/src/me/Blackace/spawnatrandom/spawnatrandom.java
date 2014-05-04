@@ -1,10 +1,13 @@
 package me.Blackace.spawnatrandom;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import me.Blackace.spawnatrandom.commands.commandRandomSpawn;
 import me.Blackace.spawnatrandom.listeners.JoinListener;
+import me.Blackace.spawnatrandom.listeners.PlayerTeleportListener;
 import me.Blackace.spawnatrandom.listeners.RespawnListener;
 import me.Blackace.spawnatrandom.util.MyConfig;
 import me.Blackace.spawnatrandom.util.MyConfigManager;
@@ -20,11 +23,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class spawnatrandom extends JavaPlugin
 {
 	Logger randomSpawnLogger = Bukkit.getLogger();
-	MyConfigManager manager;
+	MyConfigManager spawnconfigmanager;
+	MyConfigManager configmanager;
 	public MyConfig spawnsConfig;
 	public MyConfig config;
 	JoinListener joinlistener;
 	RespawnListener respawnlistener;
+	PlayerTeleportListener playerteleportlistener;
 
 	@Override
 	public void onEnable()
@@ -35,27 +40,34 @@ public class spawnatrandom extends JavaPlugin
 		//Listeners
 		this.joinlistener = new JoinListener(this);
 		this.respawnlistener = new RespawnListener(this);
+		this.playerteleportlistener = new PlayerTeleportListener(this);
 		randomSpawnLogger.info("Join Listener enabled!");
 		
 		//commands
 		this.getCommand("randomspawn").setExecutor(new commandRandomSpawn(this));
 
 		//config
-		manager = new MyConfigManager(this);
-		spawnsConfig = manager.getNewConfig("Spawns.yml", new String[]{"This is a listing of all first spawns", "all ints are placed as doubles"});
+		spawnconfigmanager = new MyConfigManager(this);
+		spawnsConfig = spawnconfigmanager.getNewConfig("Spawns.yml", new String[]{"This is a listing of all first spawns", "all ints are placed as doubles"});
 		
-		config = manager.getNewConfig("config.yml", new String[]{"This is the main config file for randomspawn", "do not delete the # anywhere" , "it may break the config ;)"});
-		config.set("Options:." + "Command based autospawn:", false , "-Setting Command based autospawn to true will disable automatic randomspawning on your configured worlds and instead use the command method which can be set to a command block for having a spawn in another world for example then have them randomSpawn in another world");
-		config.set("Options:." + "Continous Random Spawn:", false , "-Setting Continuous Random Spawn to true will also make players Random Spawn each time they die within that worlds border.");
-		config.set("Options:." + "Worlds to Spawn in:.", "theworldname", "-Use the list below to set up a list of worlds to randomSpawn in on first join.");
-		
+		configmanager = new MyConfigManager(this);
+		config = configmanager.getNewConfig("config.yml", new String[]{"This is the main config file for randomspawn", "do not delete the # anywhere" , "it may break the config ;)"});
+		config.set("Options." + "Command based autospawn", false , " ");
+		config.set("Options." + "Continous Random Spawn", false , " ");
+		if(config.get("Options." + "Worlds to enable random spawn in") == null)
+		{
+			List<String> worlds = new ArrayList<String>();
+			worlds.add("exampleWorld");
+			config.set("Options." + "Worlds to enable random spawn in", worlds , " ");
+		}
+		config.saveConfig();
 		
 	}
 
 	@Override
 	public void onDisable()
 	{
-		spawnsConfig.saveConfig();
+		
 
 
 	}
@@ -98,7 +110,7 @@ public class spawnatrandom extends JavaPlugin
 		spawnsConfig.set("spawns." + playerName + ".Worlds." + worldName + ".X", randomSpawn.getX());
 		spawnsConfig.set("spawns." + playerName + ".Worlds." + worldName + ".Y", randomSpawn.getY());
 		spawnsConfig.set("spawns." + playerName + ".Worlds." + worldName + ".Z", randomSpawn.getZ());
-		spawnsConfig.set("spawns." + playerName + ".Has RSpawned Before", true);
+		spawnsConfig.set("spawns." + playerName + ".Worlds." + worldName + ".Has RSpawned Before", true);
 		spawnsConfig.saveConfig();
 		return randomSpawn;
 

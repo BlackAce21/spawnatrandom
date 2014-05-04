@@ -68,6 +68,7 @@ public class MyConfig
         {
             this.config.set(manager.getPluginName() + "_COMMENT_" + comments, " " + comment);
             comments++;
+            this.config.set(path, value);
         }
     }
  
@@ -79,9 +80,10 @@ public class MyConfig
             {
                 this.config.set(manager.getPluginName() + "_COMMENT_" + comments, " " + comm);
                 comments++;
+                this.config.set(path, value);
             }
         }
-        this.config.set(path, value);
+        
     }
  
     public void setHeader(String[] header) 

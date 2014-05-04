@@ -27,7 +27,7 @@ public class JoinListener implements Listener
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event)
 	{
-
+		if(plugin.config.getBoolean("Options." + "Command based autospawn") == true) return;
 		Player player = event.getPlayer();
 		World world = player.getWorld();
 		String worldName = world.getName();
@@ -39,11 +39,13 @@ public class JoinListener implements Listener
 		plugin.spawnsConfig.set("spawns." + player.getName() + ".Worlds." + worldName + ".Has RSpawned Before", false , "");
 		plugin.spawnsConfig.saveConfig();
 		
-		if (player.hasPlayedBefore() == false && plugin.config.getBoolean("Options." + "Command based autospawn:") == false) 
+		if (player.hasPlayedBefore() == false || plugin.spawnsConfig.getBoolean("spawns." + player.getName() + ".Worlds." + worldName + ".Has RSpawned Before") == false) 
 		{
 			Location spawnLocation = plugin.randomSpawn(world, player);
 			player.teleport(spawnLocation.add(0, 2, 0) , TeleportCause.UNKNOWN);
 			player.sendMessage(ChatColor.GOLD + "You wake up in an unfamiliar place...");
+			plugin.spawnsConfig.set("spawns." + player.getName() + ".Worlds." + worldName + ".Has RSpawned Before", true);
+			plugin.spawnsConfig.saveConfig();
 		}
 		else
 		{
