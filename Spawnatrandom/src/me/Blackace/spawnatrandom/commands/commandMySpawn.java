@@ -38,8 +38,11 @@ public class commandMySpawn implements CommandExecutor {
 				{
 					if(((Player) sender).getPlayer().hasLineOfSight((Entity) players.get(i)))
 					{
+						if(players.get(i) != ((Player) sender).getPlayer())
+						{
 						sender.sendMessage("There are enemy players nearby. You can not use that right now.");
 						return true;
+						}
 					}
 				}
 				if(((Player) sender).getPlayer().getNoDamageTicks() >= 200)
