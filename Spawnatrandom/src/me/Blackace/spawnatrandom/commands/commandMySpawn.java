@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class commandMySpawn implements CommandExecutor {
@@ -35,7 +36,7 @@ public class commandMySpawn implements CommandExecutor {
 				List<Player> players = ((Player) sender).getWorld().getPlayers();
 				for(int i = players.size() - 1 ; i >= 0 ; i--)
 				{
-					if(((Player) sender).getPlayer().hasLineOfSight(players.get(i)))
+					if(((Player) sender).getPlayer().hasLineOfSight((Entity) players.get(i)))
 					{
 						sender.sendMessage("There are enemy players nearby. You can not use that right now.");
 						return true;
