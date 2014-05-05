@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import me.Blackace.spawnatrandom.commands.commandMySpawn;
 import me.Blackace.spawnatrandom.commands.commandRandomSpawn;
 import me.Blackace.spawnatrandom.listeners.JoinListener;
 import me.Blackace.spawnatrandom.listeners.PlayerTeleportListener;
@@ -45,6 +46,7 @@ public class spawnatrandom extends JavaPlugin
 		
 		//commands
 		this.getCommand("randomspawn").setExecutor(new commandRandomSpawn(this));
+		this.getCommand("myspawn").setExecutor(new commandMySpawn(this));
 
 		//config
 		spawnconfigmanager = new MyConfigManager(this);
@@ -118,11 +120,11 @@ public class spawnatrandom extends JavaPlugin
 
 	public double randomX(String worldName)
 	{
-		double test = (Math.random() * 80000);
+		double test = (Math.random() * 20000);
 
-		if (test > 40000)
+		if (test > 10000)
 		{
-			double negativeX = ((test - 40000) * -1);
+			double negativeX = ((test - 10000) * -1);
 			double adjustX = config.getDouble("Center Point Locations." + "World." + worldName + ".X");
 			negativeX = negativeX + adjustX;
 			return negativeX;
@@ -131,11 +133,11 @@ public class spawnatrandom extends JavaPlugin
 	}
 	public double randomZ(String worldName)
 	{
-		double test = (Math.random() * 80000);
+		double test = (Math.random() * 20000);
 
-		if (test > 40000)
+		if (test > 10000)
 		{
-			double negativeZ = ((test - 40000) * -1);
+			double negativeZ = ((test - 10000) * -1);
 			double adjustZ = config.getDouble("Center Point Locations." + "World." + worldName + ".Z:");
 			negativeZ = negativeZ + adjustZ;
 			return negativeZ;

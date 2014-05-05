@@ -5,3 +5,5 @@ description: A lite plugin that provides random spawns and respawns before playe
 commands:
   randomspawn:
     description: Forces a random spawn on target player and logs the new location to the Spawns.yml file. REQUIRES a player name.
+  myspawn:
+    description: Can only be used with no enemys nearby and no damage taken for 10 seconds. Teleports back to your randomSpawn
