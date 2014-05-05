@@ -31,7 +31,7 @@ public class commandMySpawn implements CommandExecutor {
 				if(((Player) sender).getPlayer().isFlying())
 				{
 					sender.sendMessage(ChatColor.RED + "You can't do this while flying");
-					return true;
+					return false;
 				}
 				List<Player> players = ((Player) sender).getWorld().getPlayers();
 				for(int i = players.size() - 1 ; i >= 0 ; i--)
@@ -41,7 +41,7 @@ public class commandMySpawn implements CommandExecutor {
 						if(players.get(i) != ((Player) sender).getPlayer())
 						{
 						sender.sendMessage("There are enemy players nearby. You can not use that right now.");
-						return true;
+						return false;
 						}
 					}
 				}
@@ -59,11 +59,11 @@ public class commandMySpawn implements CommandExecutor {
 				else 
 				{
 					sender.sendMessage(ChatColor.RED + "You must not have taken damage within 10 seconds to do this.");
-					return true;
+					return false;
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 
 }
